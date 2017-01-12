@@ -4,11 +4,13 @@ app.constant('api', {'key': '4cfd432d26a045708e852568197c7956', 'url': 'http://c
 app.config(['$httpProvider', "api", 'TokenServiceProvider',  function ($httpProvider, api, TokenServiceProvider) {
     $httpProvider.defaults.headers.common.Authorization = 'Token token=' + api.key;
 
-    $httpProvider.interceptors.push([function() {
-        tokenService = TokenServiceProvider.$get();
+    $httpProvider.interceptors.push(['TokenService', function(TokenService) {
         return {
             request: function(config){
-                var token = tokenService.getToken();
+                var token = TokenService.getToken();
+                console.log(token);
+                if (token != "" )
+                    config.url += ((config.url.indexOf('?') >=0) ? '&' : '?') + 'token=' + token;
                 return config;
             }
         }
