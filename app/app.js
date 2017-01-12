@@ -10,5 +10,25 @@ app.factory('Member', ['$resource', 'api', function($resource, api){
 }]);
 
 app.controller("StartController", ['$resource', 'Member', function($scope, Member){
-  $scope.members = Member.query();
+  $scope.newMember = new Member({
+    fullname: "zbeub",
+    email : "zbeub@coop.fr",
+    password : "zbeub"
+  });
+
+  $scope.newMember.$save(function(successs){
+    console.log(successs);
+  },
+  function(error){
+    console.log(error);
+  }
+);
+
+  $scope.members = Member.query(function(m){
+    console.log(m);
+  },
+  function(error){
+    console.log(error);
+  }
+);
 }]);
