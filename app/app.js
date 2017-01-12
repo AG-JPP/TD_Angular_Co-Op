@@ -6,7 +6,11 @@ app.config(['$httpProvider', "api", function($httpProvider, api){
 }]);
 
 app.factory('Member', ['$resource', 'api', function($resource, api){
-  return $resource(api.url+"/members/:id", {id: '@_id'}, {update: {method : "PUT"}});
+  return $resource(api.url+"/members/:id", {id: '@_id'},
+    {
+    update: {method : "PUT"},
+    signin: {method : "POST", url: api.url+"/members/signin"}
+    });
 }]);
 
 app.controller("StartController", ['$resource', 'Member', function($scope, Member){
@@ -15,7 +19,6 @@ app.controller("StartController", ['$resource', 'Member', function($scope, Membe
     email : "zbeub@coop.fr",
     password : "zbeub"
   });
-
 /*  $scope.newMember.$save(function(successs){
     console.log(successs);
   },
@@ -23,6 +26,18 @@ app.controller("StartController", ['$resource', 'Member', function($scope, Membe
     console.log(error);
   }
 );*/
+
+$scope.member = Member.signin({
+    email: 'toto3@coop.fr',
+    password: 'toto',
+  },
+  function(m){
+    $scope.member = m;
+    console.log($scope.member);
+  },
+  function(e){
+    console.log(e);
+});
 
   $scope.member = Member.save({
     fullname : "TOTO",
