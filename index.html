@@ -9,5 +9,12 @@
         <title>Co'oP</title>
     </head>
     <body ng-controller="StartController">
+      <h1>Register</h1>
+      <form>
+        <input type="text" ng-model="member.email"/>
+        <input type="text" ng-model="member.fullname" />
+        <input type="password" ng-model="member.pass" />
+        <input type="submit" ng-click="Member.save()" />
+      </form>
     </body>
 </html>

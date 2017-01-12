@@ -83,4 +83,20 @@ app.controller("StartController", ['$resource', 'Member', 'TokenService', functi
             console.log(error);
         }
     );
+
+    $scope.ajoutMembre = function(){
+      $scope.newMember = new Member({
+          fullname: member.fullname,
+          email:  member.email,
+          password: member.pass,
+      });
+      $scope.newMember.$save(function(successs){
+        console.log(successs);
+       },
+         function(error){
+         console.log(error);
+       }
+      );
+    }
+
 }]);
