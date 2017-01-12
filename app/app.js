@@ -16,13 +16,23 @@ app.controller("StartController", ['$resource', 'Member', function($scope, Membe
     password : "zbeub"
   });
 
-  $scope.newMember.$save(function(successs){
+/*  $scope.newMember.$save(function(successs){
     console.log(successs);
   },
   function(error){
     console.log(error);
   }
-);
+);*/
+
+  $scope.member = Member.save({
+    fullname : "TOTO",
+    email: "toto3@coop.fr",
+    password : 'toto'
+  }, function(m) {
+    console.log($scope.member);
+  }, function (e) {
+    console.log($scope.newMember);
+  });
 
   $scope.members = Member.query(function(m){
     console.log(m);
