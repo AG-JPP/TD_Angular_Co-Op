@@ -76,6 +76,7 @@ app.controller("StartController", ['$resource', "$scope", 'Member', 'TokenServic
     //     console.log($scope.newMember);
     // });
 
+
     $scope.members = Member.query(function (m) {
             console.log(m);
         },
@@ -98,5 +99,18 @@ app.controller("StartController", ['$resource', "$scope", 'Member', 'TokenServic
        }
       );
     }
+
+    $scope.loginMembre = function(){
+      $scope.member = Member.singin({
+        email : $scope.member.email,
+        pass : $scope.member.pass,
+      },
+    function(success){
+      console.log(success)
+    },
+    function(error){
+      console.log(error);
+    }
+  )}
 
 }]);
