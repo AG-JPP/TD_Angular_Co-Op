@@ -36,12 +36,12 @@ app.service('TokenService', [function() {
 }]);
 
 
-app.controller("StartController", ['$resource', 'Member', 'TokenService', function ($scope, Member, TokenService) {
-    $scope.newMember = new Member({
-        fullname: "zbeub",
-        email: "zbeub@coop.fr",
-        password: "zbeub"
-    });
+app.controller("StartController", ['$resource', "$scope", 'Member', 'TokenService', function ($resource, $scope, Member, TokenService) {
+    // $scope.newMember = new Member({
+    //     fullname: "zbeub",
+    //     email: "zbeub@coop.fr",
+    //     password: "zbeub"
+    // });
     /*  $scope.newMember.$save(function(successs){
      console.log(successs);
      },
@@ -66,15 +66,15 @@ app.controller("StartController", ['$resource', 'Member', 'TokenService', functi
             console.log(e);
         });
 
-    $scope.member = Member.save({
-        fullname: "TOTO",
-        email: "toto3@coop.fr",
-        password: 'toto'
-    }, function (m) {
-        console.log($scope.member);
-    }, function (e) {
-        console.log($scope.newMember);
-    });
+    // $scope.member = Member.save({
+    //     fullname: "TOTO",
+    //     email: "toto3@coop.fr",
+    //     password: 'toto'
+    // }, function (m) {
+    //     console.log($scope.member);
+    // }, function (e) {
+    //     console.log($scope.newMember);
+    // });
 
     $scope.members = Member.query(function (m) {
             console.log(m);
@@ -86,12 +86,12 @@ app.controller("StartController", ['$resource', 'Member', 'TokenService', functi
 
     $scope.ajoutMembre = function(){
       $scope.newMember = new Member({
-          fullname: member.fullname,
-          email:  member.email,
-          password: member.pass,
+          fullname: $scope.member.fullname,
+          email:  $scope.member.email,
+          password: $scope.member.pass,
       });
-      $scope.newMember.$save(function(successs){
-        console.log(successs);
+      $scope.newMember.$save(function(success){
+        console.log(success);
        },
          function(error){
          console.log(error);
