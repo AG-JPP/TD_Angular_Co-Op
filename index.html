@@ -10,13 +10,8 @@
         <title>Co'oP</title>
     </head>
     <body>
-      <div ng-controller = "StartController">
-        <h1>Login</h1>
-        <form>
-          <input type="text" ng-model="member.email" placeholder="email"/>
-          <input type="password" ng-model="member.pass" placeholder="password"/>
-          <input type="submit" ng-click="loginMembre()"/>
-        </form>
-    </div>
+      <ng-view>
+
+      </ng-view>
     </body>
 </html>

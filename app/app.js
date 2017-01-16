@@ -18,7 +18,7 @@ app.config(['$httpProvider', "api", 'TokenServiceProvider',  function ($httpProv
 
 app.config(['$routeProvider', function($routeProvider) {
     $routeProvider.when('/', {
-        templateUrl: 'index.html',
+        templateUrl: 'templates/login.html',
         controller: 'StartController'
     });
 
@@ -33,7 +33,7 @@ app.config(['$routeProvider', function($routeProvider) {
     });
 
     $routeProvider.when('/register', {
-        templateUrl: 'register.html',
+        templateUrl: 'templates/register.html',
         controller: 'registerController'
     });
 }]);
@@ -57,46 +57,7 @@ app.service('TokenService', [function() {
 }]);
 
 
-app.controller("StartController", ['$resource', "$scope", 'Member', 'TokenService', function ($resource, $scope, Member, TokenService) {
-    // $scope.newMember = new Member({
-    //     fullname: "zbeub",
-    //     email: "zbeub@coop.fr",
-    //     password: "zbeub"
-    // });
-    /*  $scope.newMember.$save(function(successs){
-     console.log(successs);
-     },
-     function(error){
-     console.log(error);
-     }
-     );*/
-
-    // $scope.member = Member.signin({
-    //         email: 'toto3@coop.fr',
-    //         password: 'toto',
-    //     },
-    //     function (m) {
-    //         $scope.member = m;
-    //         console.log($scope.member);
-    //         TokenService.setToken($scope.member.token);
-    //         $scope.member = Member.query(function(member) {
-    //
-    //         })
-    //     },
-    //     function (e) {
-    //         console.log(e);
-    //     });
-
-    // $scope.member = Member.save({
-    //     fullname: "TOTO",
-    //     email: "toto3@coop.fr",
-    //     password: 'toto'
-    // }, function (m) {
-    //     console.log($scope.member);
-    // }, function (e) {
-    //     console.log($scope.newMember);
-    // });
-
+app.controller("StartController", ['$resource', "$scope", "$location", 'Member', 'TokenService', function ($resource, $scope, $location, Member, TokenService) {
 
     $scope.members = Member.query(function (m) {
             console.log(m);
@@ -106,20 +67,25 @@ app.controller("StartController", ['$resource', "$scope", 'Member', 'TokenServic
         }
     );
 
-    $scope.ajoutMembre = function(){
-      $scope.newMember = new Member({
-          fullname: $scope.member.fullname,
-          email:  $scope.member.email,
-          password: $scope.member.pass,
-      });
-      $scope.newMember.$save(function(success){
-        console.log(success);
-       },
-         function(error){
-         console.log(error);
-       }
-      );
+    $scope.redirectRegister = function(){
+      $location.path('/register');
+      $location.replace();
     }
+
+    // $scope.ajoutMembre = function(){
+    //   $scope.newMember = new Member({
+    //       fullname: $scope.member.fullname,
+    //       email:  $scope.member.email,
+    //       password: $scope.member.pass,
+    //   });
+    //   $scope.newMember.$save(function(success){
+    //     console.log(success);
+    //    },
+    //      function(error){
+    //      console.log(error);
+    //    }
+    //   );
+    // }
 
     $scope.loginMembre = function(){
       $scope.member = Member.signin({
@@ -130,7 +96,7 @@ app.controller("StartController", ['$resource', "$scope", 'Member', 'TokenServic
           $scope.member = m;
           console.log($scope.member);
           TokenService.setToken($scope.member.token);
-          
+
           $scope.member = Member.query(function(member) {
 
           })
@@ -139,5 +105,24 @@ app.controller("StartController", ['$resource', "$scope", 'Member', 'TokenServic
           console.log(e);
       }
   )}
+
+}]);
+
+app.controller('registerController', ['$resource', '$scope', 'Member', function($resource, $scope, Member){
+
+  $scope.ajoutMembre = function(){
+    $scope.newMember = new Member({
+        fullname: $scope.member.fullname,
+        email:  $scope.member.email,
+        password: $scope.member.pass,
+    });
+    $scope.newMember.$save(function(success){
+      console.log(success);
+     },
+       function(error){
+       console.log(error);
+     }
+    );
+  }
 
 }]);
