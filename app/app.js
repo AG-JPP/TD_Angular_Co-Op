@@ -1,4 +1,4 @@
-var app = angular.module("coop", ["ngResource"]);
+var app = angular.module("coop", ["ngResource", 'ngRoute']);
 app.constant('api', {'key': '4cfd432d26a045708e852568197c7956', 'url': 'http://coop.api.netlor.fr/api'});
 
 app.config(['$httpProvider', "api", 'TokenServiceProvider',  function ($httpProvider, api, TokenServiceProvider) {
@@ -14,6 +14,28 @@ app.config(['$httpProvider', "api", 'TokenServiceProvider',  function ($httpProv
             }
         }
     }])
+}]);
+
+app.config(['$routeProvider', function($routeProvider) {
+    $routeProvider.when('/', {
+        templateUrl: 'index.html',
+        controller: 'StartController'
+    });
+
+    $routeProvider.when('/channel/:id', {
+        templateUrl: 'channel.html',
+        controller: 'channelController'
+    });
+
+    $routeProvider.when('/channels', {
+        templateUrl: 'channels.html',
+        controller: 'channelsController'
+    });
+
+    $routeProvider.when('/register', {
+        templateUrl: 'register.html',
+        controller: 'registerController'
+    });
 }]);
 
 app.factory('Member', ['$resource', 'api', function ($resource, api) {
