@@ -71,21 +71,21 @@ app.controller("StartController", ['$resource', "$scope", 'Member', 'TokenServic
      }
      );*/
 
-    $scope.member = Member.signin({
-            email: 'toto3@coop.fr',
-            password: 'toto',
-        },
-        function (m) {
-            $scope.member = m;
-            console.log($scope.member);
-            TokenService.setToken($scope.member.token);
-            $scope.member = Member.query(function(member) {
-
-            })
-        },
-        function (e) {
-            console.log(e);
-        });
+    // $scope.member = Member.signin({
+    //         email: 'toto3@coop.fr',
+    //         password: 'toto',
+    //     },
+    //     function (m) {
+    //         $scope.member = m;
+    //         console.log($scope.member);
+    //         TokenService.setToken($scope.member.token);
+    //         $scope.member = Member.query(function(member) {
+    //
+    //         })
+    //     },
+    //     function (e) {
+    //         console.log(e);
+    //     });
 
     // $scope.member = Member.save({
     //     fullname: "TOTO",
@@ -122,14 +122,15 @@ app.controller("StartController", ['$resource', "$scope", 'Member', 'TokenServic
     }
 
     $scope.loginMembre = function(){
-      $scope.member = Member.singin({
+      $scope.member = Member.signin({
         email : $scope.member.email,
-        pass : $scope.member.pass,
+        password : $scope.member.pass,
       },
       function (m) {
           $scope.member = m;
           console.log($scope.member);
           TokenService.setToken($scope.member.token);
+          
           $scope.member = Member.query(function(member) {
 
           })

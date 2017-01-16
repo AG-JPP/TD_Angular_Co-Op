@@ -9,13 +9,14 @@
         <script src="app/app.js" ></script>
         <title>Co'oP</title>
     </head>
-    <body ng-controller="StartController">
-      <!-- <h1>Register</h1>
-      <form>
-        <input type="text" placeholder="email" ng-model="member.email"/>
-        <input type="text" placeholder="fullname" ng-model="member.fullname" />
-        <input type="password" placeholder="password" ng-model="member.pass" />
-        <input type="submit" ng-click="ajoutMembre()" />
-      </form> -->
+    <body>
+      <div ng-controller = "StartController">
+        <h1>Login</h1>
+        <form>
+          <input type="text" ng-model="member.email" placeholder="email"/>
+          <input type="password" ng-model="member.pass" placeholder="password"/>
+          <input type="submit" ng-click="loginMembre()"/>
+        </form>
+    </div>
     </body>
 </html>
