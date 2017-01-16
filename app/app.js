@@ -126,12 +126,17 @@ app.controller("StartController", ['$resource', "$scope", 'Member', 'TokenServic
         email : $scope.member.email,
         pass : $scope.member.pass,
       },
-    function(success){
-      console.log(success)
-    },
-    function(error){
-      console.log(error);
-    }
+      function (m) {
+          $scope.member = m;
+          console.log($scope.member);
+          TokenService.setToken($scope.member.token);
+          $scope.member = Member.query(function(member) {
+
+          })
+      },
+      function (e) {
+          console.log(e);
+      }
   )}
 
 }]);
