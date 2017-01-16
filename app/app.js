@@ -8,7 +8,6 @@ app.config(['$httpProvider', "api", 'TokenServiceProvider',  function ($httpProv
         return {
             request: function(config){
                 var token = TokenService.getToken();
-                console.log(token);
                 if (token != "" )
                     config.url += ((config.url.indexOf('?') >=0) ? '&' : '?') + 'token=' + token;
                 return config;
