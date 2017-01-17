@@ -143,4 +143,17 @@ app.controller('channelsController', ['$resource', '$scope', 'Channels', functio
     function(error){
       console.log(error);
     });
+
+    $scope.createChannel = function(){
+      $scope.newChannel = new Channels({
+        label: $scope.channel.label,
+        topic: $scope.channel.topic,
+      });
+      $scope.newChannel.$save(function(success){
+
+      },
+      function(error){
+        console.log(error);
+      });
+    }
 }]);
