@@ -96,7 +96,7 @@ app.controller("StartController", ['$resource', "$scope", "$location", 'Member',
           $scope.member = m;
           console.log($scope.member);
           TokenService.setToken($scope.member.token);
-
+e 
           $scope.member = Member.query(function(member) {
 
           })
