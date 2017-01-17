@@ -23,12 +23,12 @@ app.config(['$routeProvider', function($routeProvider) {
     });
 
     $routeProvider.when('/channel/:id', {
-        templateUrl: 'channel.html',
+        templateUrl: 'templates/channel.html',
         controller: 'channelController'
     });
 
     $routeProvider.when('/channels', {
-        templateUrl: 'channels.html',
+        templateUrl: 'templates/channels.html',
         controller: 'channelsController'
     });
 
@@ -44,6 +44,13 @@ app.factory('Member', ['$resource', 'api', function ($resource, api) {
             update: {method: "PUT"},
             signin: {method: "POST", url: api.url + "/members/signin"}
         });
+}]);
+
+app.factory('Channels', ['$resource', 'api', function($resource, api){
+  return $resource(api.url + "/channels/:id", {id: "@_id"},
+      {
+        delete : {method : "DELETE", url : api.url + "/channels/:id"}
+      });
 }]);
 
 app.service('TokenService', [function() {
@@ -98,8 +105,9 @@ app.controller("StartController", ['$resource', "$scope", "$location", 'Member',
           TokenService.setToken($scope.member.token);
           localStorage.setItem("token", TokenService.getToken());
           localStorage.setItem("id", $scope.member._id);
-          $scope.member = Member.query(function(member) {
-          })
+          $scope.member = Member.query(function(member) {});
+          $location.path('/channels');
+          $location.replace();
       },
       function (e) {
           console.log(e);
@@ -125,4 +133,14 @@ app.controller('registerController', ['$resource', '$scope', 'Member', function(
     );
   }
 
+}]);
+
+app.controller('channelsController', ['$resource', '$scope', 'Channels', function($resource, $scope, Channels){
+  $scope.channels = Channels.query(
+    function(success){
+
+    },
+    function(error){
+      console.log(error);
+    });
 }]);
