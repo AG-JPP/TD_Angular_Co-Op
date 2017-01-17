@@ -96,9 +96,9 @@ app.controller("StartController", ['$resource', "$scope", "$location", 'Member',
           $scope.member = m;
           console.log($scope.member);
           TokenService.setToken($scope.member.token);
-e 
+          localStorage.setItem("token", TokenService.getToken());
+          localStorage.setItem("id", $scope.member._id);
           $scope.member = Member.query(function(member) {
-
           })
       },
       function (e) {
