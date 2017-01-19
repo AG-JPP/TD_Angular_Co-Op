@@ -78,10 +78,15 @@ app.factory('Member', ['$resource', 'api', function ($resource, api) {
 app.factory('Channels', ['$resource', 'api', function ($resource, api) {
     return $resource(api.url + "/channels/:id", {id: "@_id"},
         {
-            delete: {method: "DELETE", url: api.url + "/channels/:id"},
-            findOne : {method : "GET", url: api.url + "/channels/:id/posts", isArray: true},
-            send : {method: "POST", url: api.url + "/channels/:id/posts"}
+            delete: {method: "DELETE", url: api.url + "/channels/:id"}
         });
+}]);
+
+app.factory('Post', ['$resource', 'api', function($resource, api){
+  return $resource(api.url + "/channels/:id/posts", {id: "@_id"}),
+  {
+
+  }
 }]);
 
 app.service('TokenService', [function () {
@@ -188,16 +193,5 @@ app.controller('channelsController', ['$resource', '$scope', 'Channels', functio
             function (error) {
                 console.log(error);
             });
-    }
-
-    $scope.findOne = function(idChan){
-      Channels.findOne({id: idChan},
-        function(success){
-          $location.path('/channel/:id', {id: idChan});
-          $location.replace();
-      },
-        function(error){
-          console.log(error);
-      });
     }
 }]);
