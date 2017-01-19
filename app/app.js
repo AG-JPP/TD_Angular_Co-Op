@@ -79,7 +79,7 @@ app.factory('Channels', ['$resource', 'api', function ($resource, api) {
     return $resource(api.url + "/channels/:id", {id: "@_id"},
         {
             delete: {method: "DELETE", url: api.url + "/channels/:id"},
-            findOne : {method : "GET", url: api.url + "/channels/:id/posts"},
+            findOne : {method : "GET", url: api.url + "/channels/:id/posts", isArray: true},
             send : {method: "POST", url: api.url + "/channels/:id/posts"}
         });
 }]);
