@@ -78,7 +78,9 @@ app.factory('Member', ['$resource', 'api', function ($resource, api) {
 app.factory('Channels', ['$resource', 'api', function ($resource, api) {
     return $resource(api.url + "/channels/:id", {id: "@_id"},
         {
-            delete: {method: "DELETE", url: api.url + "/channels/:id"}
+            delete: {method: "DELETE", url: api.url + "/channels/:id"},
+            findOne : {method : "GET", url: api.url + "/channels/:id/posts"},
+            send : {method: "POST", url: api.url + "/channels/:id/posts"}
         });
 }]);
 
@@ -93,7 +95,7 @@ app.service('TokenService', [function () {
 }]);
 
 
-app.controller("StartController", ['$resource', "$scope", "$location", 'Member', 'TokenService', function ($resource, $scope, $location, Member, TokenService) {
+app.controller("StartController", ["$scope", "$location", 'Member', 'TokenService', function ($scope, $location, Member, TokenService) {
 
     $scope.members = Member.query(function (m) {
             console.log(m);
@@ -147,7 +149,7 @@ app.controller("StartController", ['$resource', "$scope", "$location", 'Member',
 
 }]);
 
-app.controller('registerController', ['$resource', '$scope', 'Member', function ($resource, $scope, Member) {
+app.controller('registerController', ['$scope', 'Member', function ($scope, Member) {
 
     $scope.ajoutMembre = function () {
         $scope.newMember = new Member({
@@ -186,5 +188,16 @@ app.controller('channelsController', ['$resource', '$scope', 'Channels', functio
             function (error) {
                 console.log(error);
             });
+    }
+
+    $scope.findOne = function(idChan){
+      Channels.findOne({id: idChan},
+        function(success){
+          $location.path('/channel/:id', {id: idChan});
+          $location.replace();
+      },
+        function(error){
+          console.log(error);
+      });
     }
 }]);
