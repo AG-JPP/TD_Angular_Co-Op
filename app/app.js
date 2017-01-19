@@ -38,11 +38,12 @@ app.config(['$routeProvider', function ($routeProvider) {
     });
 }]);
 
-app.run(['$rootScope', '$location', 'Member', 'TokenService', function ($rootScope, $location, Member, TokenService) {
+app.run(['$rootScope', '$location', 'Member', 'TokenService', 'MemberService', function ($rootScope, $location, Member, TokenService, MemberService) {
     $rootScope.$on('$routeChangeStart', function (event, next, current) {
         if (localStorage.getItem('token') != null) {
             TokenService.setToken(localStorage.getItem('token'));
             Member.signedin({id: localStorage.getItem('id')}, function (m) {
+              MemberService.addMembers();
             }, function (error) {
                 TokenService.setToken("");
                 localStorage.clear();
@@ -96,8 +97,28 @@ app.service('TokenService', [function () {
     }
 }]);
 
+app.service('MemberService', ['Member', function(Member){
+    this.members = [];
 
-app.controller("StartController", ["$scope", "$location", 'Member', 'TokenService', function ($scope, $location, Member, TokenService) {
+    this.getMembers = function(){
+      return this.members;
+    }
+
+    this.findOne = function(id){
+      this.members.forEach(function(e){
+        if(e._id == id){
+          return e;
+        }
+      });
+    }
+
+    this.addMembers = function(){
+      this.members = Member.query(function(success){}, function(error){});
+    }
+}]);
+
+
+app.controller("StartController", ["$scope", "$location", 'Member', 'TokenService', "MemberService", function ($scope, $location, Member, TokenService, MemberService) {
 
     $scope.members = Member.query(function (m) {
             console.log(m);
@@ -198,18 +219,22 @@ app.controller('channelsController', ['$scope', 'Channels', '$location', functio
     }
 }]);
 
-app.controller('postController', ['$scope', 'Post', '$location', 'Member', function ($scope, Post, $location, Member) {
+app.controller('postController', ['$scope', 'Post', '$location', 'MemberService', function ($scope, Post, $location, MemberService) {
     var id = $location.url().split('/');
     id = id[id.length - 1];
-    $scope.posts = Post.query({id: id}, function (success) {
-        Member.query(function (s) {
-            s.forEach(function (e) {
-                if (e._id == success.membre_id) {
-                    $scope.e.nom = e.fullname;
-                }
-            })
+    $scope.posts = Post.query({id: id},
+      function (success) {
+        success.forEach(function(e){
+          var members = MemberService.getMembers();
+          members.$promise.then(function(success){
+            console.log(success);
+            e.fullname = MemberService.findOne(e.member_id).fullname;
+            e.email = MemberService.findOne(e.member_id).email;
+          });
+          // e.fullname = MemberService.findOne(e.member_id).fullname;
+          // e.email = MemberService.findOne(e.member_id).email;
+          console.log(e);
         });
-        console.log(success);
     }, function (error) {
         console.log(error);
     })
