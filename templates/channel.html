@@ -1,1 +1,10 @@
-bonjour
+<div ng-controller="channelController">
+  <h1></h1>
+  <div>
+    <ul>
+      <li ng-repeat="message in messages">
+        {{message.message}} <span>Posted by {{message.member._id}}</span>
+      </li>
+    </ul>
+  </div>
+</div>
