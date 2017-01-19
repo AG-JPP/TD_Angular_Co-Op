@@ -24,7 +24,7 @@ app.config(['$routeProvider', function ($routeProvider) {
 
     $routeProvider.when('/channel/:id', {
         templateUrl: 'templates/channel.html',
-        controller: 'channelController'
+        controller: 'postController'
     });
 
     $routeProvider.when('/channels', {
@@ -65,13 +65,12 @@ app.run(['$rootScope', '$location', 'Member', 'TokenService', function ($rootSco
 }]);
 
 
-
 app.factory('Member', ['$resource', 'api', function ($resource, api) {
     return $resource(api.url + "/members/:id", {id: '@_id'},
         {
             update: {method: "PUT"},
             signin: {method: "POST", url: api.url + "/members/signin"},
-            signedin: {method : 'GET', url:api.url+'/members/:id/signedin'}
+            signedin: {method: 'GET', url: api.url + '/members/:id/signedin'}
         });
 }]);
 
@@ -82,11 +81,9 @@ app.factory('Channels', ['$resource', 'api', function ($resource, api) {
         });
 }]);
 
-app.factory('Post', ['$resource', 'api', function($resource, api){
-  return $resource(api.url + "/channels/:id/posts", {id: "@_id"}),
-  {
-
-  }
+app.factory('Post', ['$resource', 'api', function ($resource, api) {
+    return $resource(api.url + "/channels/:id/posts", {id: "@_id"},
+        {})
 }]);
 
 app.service('TokenService', [function () {
@@ -173,7 +170,7 @@ app.controller('registerController', ['$scope', 'Member', function ($scope, Memb
 
 }]);
 
-app.controller('channelsController', ['$resource', '$scope', 'Channels', function ($resource, $scope, Channels) {
+app.controller('channelsController', ['$scope', 'Channels', '$location', function ($scope, Channels, $location) {
     $scope.channels = Channels.query(
         function (success) {
 
@@ -185,7 +182,7 @@ app.controller('channelsController', ['$resource', '$scope', 'Channels', functio
     $scope.createChannel = function () {
         $scope.newChannel = new Channels({
             label: $scope.channel.label,
-            topic: $scope.channel.topic,
+            topic: $scope.channel.topic
         });
         $scope.newChannel.$save(function (success) {
 
@@ -193,5 +190,27 @@ app.controller('channelsController', ['$resource', '$scope', 'Channels', functio
             function (error) {
                 console.log(error);
             });
+    };
+
+    $scope.findOne = function (idChan) {
+        $location.path("/channel/" + idChan);
+        $location.replace();
     }
+}]);
+
+app.controller('postController', ['$scope', 'Post', '$location', 'Member', function ($scope, Post, $location, Member) {
+    var id = $location.url().split('/');
+    id = id[id.length - 1];
+    $scope.posts = Post.query({id: id}, function (success) {
+        Member.query(function (s) {
+            s.forEach(function (e) {
+                if (e._id == success.membre_id) {
+                    $scope.e.nom = e.fullname;
+                }
+            })
+        });
+        console.log(success);
+    }, function (error) {
+        console.log(error);
+    })
 }]);

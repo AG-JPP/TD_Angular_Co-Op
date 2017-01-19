@@ -1,9 +1,9 @@
-<div ng-controller="channelController">
+<div ng-controller="postController">
   <h1></h1>
   <div>
     <ul>
-      <li ng-repeat="message in messages">
-        {{message.message}} <span>Posted by {{message.member._id}}</span>
+      <li ng-repeat="message in posts">
+        {{message.message}} <span>Posted by {{message.nom}}</span>
       </li>
     </ul>
   </div>
