@@ -109,15 +109,18 @@ app.service('MemberService', ['Member', function(Member){
     }
 
 
-    this.findOne = function(id, members){
-      var res = {fullname : "Inconnu", email: "Inconnu"};
-      members.forEach(function(element){
-        console.log("test2");
-        if(element._id == id){
-          res = element;
-        }
+    this.findOne = function(id){
+      var members = Member.query(function(m){
+        m.forEach(function(element){
+          // console.log(element);
+          // console.log(id);
+          console.log("test2");
+          if(element._id == id){
+            console.log(element);
+            return element;
+          }
+        });
       });
-      return res;
     }
 
     this.addMembers = function(){
@@ -235,12 +238,11 @@ app.controller('postController', ['$scope', 'Post', '$location', 'MemberService'
         success.forEach(function(e){
           var newMember = "R";
           var members = MemberService.getMembers();
-
-          //console.log(e.member_id);
-          console.log(MemberService.findOne(e.member_id, members));
-          newMember.fullname = MemberService.findOne(e.member_id, members).fullname;
-          newMember.email = MemberService.findOne(e.member_id, members).email;
+          console.log(MemberService.findOne(e.member_id));
+          newMember.fullname = MemberService.findOne(e.member_id).fullname;
+          newMember.email = MemberService.findOne(e.member_id).email;
           console.log(newMember);
+
           //members.$promise.then(function(success){
              //console.log(success);
             // e.fullname = MemberService.findOne(e.member_id).fullname;
