@@ -108,15 +108,16 @@ app.service('MemberService', ['Member', function(Member){
       return this.members;
     }
 
-    this.findOne = function(id){
-      console.log("find this id : " + id);
-      this.members.forEach(function(e){
-        if(e._id == id){
-          return e;
-        }else{
-          return {fullname : "inconnue", email: "inconnue"};
+
+    this.findOne = function(id, members){
+      var res = {fullname : "Inconnu", email: "Inconnu"};
+      members.forEach(function(element){
+        console.log("test2");
+        if(element._id == id){
+          res = element;
         }
       });
+      return res;
     }
 
     this.addMembers = function(){
@@ -232,24 +233,22 @@ app.controller('postController', ['$scope', 'Post', '$location', 'MemberService'
     $scope.posts = Post.query({id: id},
       function (success) {
         success.forEach(function(e){
+          var newMember = "R";
           var members = MemberService.getMembers();
-          //console.log(members.$promise);
-          members.$promise.then(function(s){
-            //console.log(s);
-            s.forEach(function(element){
-              // console.log(element._id);
-              // console.log(MemberService.findOne(element._id));
-              // console.log(s);
-              // console.log(members);
-              e.fullname = MemberService.findOne(element._id).fullname;
-              e.email = MemberService.findOne(element._id).email;
-            });
-          });
-          // e.fullname = MemberService.findOne(e.member_id).fullname;
-          // e.email = MemberService.findOne(e.member_id).email;
-          // console.log(e);
+
+          //console.log(e.member_id);
+          console.log(MemberService.findOne(e.member_id, members));
+          newMember.fullname = MemberService.findOne(e.member_id, members).fullname;
+          newMember.email = MemberService.findOne(e.member_id, members).email;
+          console.log(newMember);
+          //members.$promise.then(function(success){
+             //console.log(success);
+            // e.fullname = MemberService.findOne(e.member_id).fullname;
+            // e.email = MemberService.findOne(e.member_id).email;
+          //});
+          //console.log(e);
         });
     }, function (error) {
         console.log(error);
-    })
+    });
 }]);
