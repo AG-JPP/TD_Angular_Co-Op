@@ -1,9 +1,9 @@
 <div ng-controller="postController">
   <h1></h1>
   <div>
-    <ul>
-      <li ng-repeat="message in posts">
-        <div class="card-panel teal lighten-2">{{message.message}} <span ng-repeat="member in members">Posted by {{member.fullname}}</span></div>
+    <ul class="collection with-header">
+      <li class="collection-header"ng-repeat="message in posts" ng-repeat="member in members">
+        <div>{{message.message}} <span class="secondary-content">Posted by {{member.fullname}}</span></div>
       </li>
     </ul>
   </div>
