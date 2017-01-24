@@ -1,4 +1,4 @@
-var app = angular.module("coop", ["ngResource", 'ngRoute']);
+var app = angular.module("coop", ["ngResource", 'ngRoute', 'ng']);
 app.constant('api', {'key': '4cfd432d26a045708e852568197c7956', 'url': 'http://coop.api.netlor.fr/api'});
 
 app.config(['$httpProvider', "api", 'TokenServiceProvider', function ($httpProvider, api, TokenServiceProvider) {
@@ -14,6 +14,10 @@ app.config(['$httpProvider', "api", 'TokenServiceProvider', function ($httpProvi
             }
         }
     }])
+}]);
+
+app.config(['$qProvider', function ($qProvider) {
+    $qProvider.errorOnUnhandledRejections(false);
 }]);
 
 app.config(['$routeProvider', function ($routeProvider) {
@@ -105,9 +109,12 @@ app.service('MemberService', ['Member', function(Member){
     }
 
     this.findOne = function(id){
+      console.log("find this id : " + id);
       this.members.forEach(function(e){
         if(e._id == id){
           return e;
+        }else{
+          return {fullname : "inconnue", email: "inconnue"};
         }
       });
     }
@@ -121,7 +128,7 @@ app.service('MemberService', ['Member', function(Member){
 app.controller("StartController", ["$scope", "$location", 'Member', 'TokenService', "MemberService", function ($scope, $location, Member, TokenService, MemberService) {
 
     $scope.members = Member.query(function (m) {
-            console.log(m);
+            //console.log(m);
         },
         function (error) {
             console.log(error);
@@ -155,7 +162,7 @@ app.controller("StartController", ["$scope", "$location", 'Member', 'TokenServic
             },
             function (m) {
                 $scope.member = m;
-                console.log($scope.member);
+                //console.log($scope.member);
                 TokenService.setToken($scope.member.token);
                 localStorage.setItem("token", TokenService.getToken());
                 localStorage.setItem("id", $scope.member._id);
@@ -181,7 +188,7 @@ app.controller('registerController', ['$scope', 'Member', function ($scope, Memb
             password: $scope.member.pass,
         });
         $scope.newMember.$save(function (success) {
-                console.log(success);
+                //console.log(success);
             },
             function (error) {
                 console.log(error);
@@ -226,14 +233,21 @@ app.controller('postController', ['$scope', 'Post', '$location', 'MemberService'
       function (success) {
         success.forEach(function(e){
           var members = MemberService.getMembers();
-          members.$promise.then(function(success){
-            console.log(success);
-            e.fullname = MemberService.findOne(e.member_id).fullname;
-            e.email = MemberService.findOne(e.member_id).email;
+          //console.log(members.$promise);
+          members.$promise.then(function(s){
+            //console.log(s);
+            s.forEach(function(element){
+              // console.log(element._id);
+              // console.log(MemberService.findOne(element._id));
+              // console.log(s);
+              // console.log(members);
+              e.fullname = MemberService.findOne(element._id).fullname;
+              e.email = MemberService.findOne(element._id).email;
+            });
           });
           // e.fullname = MemberService.findOne(e.member_id).fullname;
           // e.email = MemberService.findOne(e.member_id).email;
-          console.log(e);
+          // console.log(e);
         });
     }, function (error) {
         console.log(error);
