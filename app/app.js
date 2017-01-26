@@ -72,7 +72,8 @@ app.factory('Channels', ['$resource', 'api', function ($resource, api) {
     return $resource(api.url + "/channels/:id", {id: "@_id"},
         {
             delete: {method: "DELETE", url: api.url + "/channels/:id"},
-            logout : {method : "DELETE", url: api.url + "/members/signout"}
+            logout : {method : "DELETE", url: api.url + "/members/signout"},
+            update: {method: "PUT"}
         });
 }]);
 
@@ -224,6 +225,10 @@ app.controller('channelsController', ['$scope', 'Channels', '$location', functio
         $location.path("/");
         $location.replace();
       });
+    }
+
+    $scope.editChannel = function(id){
+      console.log(id);
     }
 
 }]);
