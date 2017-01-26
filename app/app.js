@@ -1,7 +1,7 @@
 var app = angular.module("coop", ["ngResource", 'ngRoute', 'ng']);
 app.constant('api', {'key': '4cfd432d26a045708e852568197c7956', 'url': 'http://coop.api.netlor.fr/api'});
 
-app.config(['$httpProvider', "api", 'TokenServiceProvider', function ($httpProvider, api, TokenServiceProvider) {
+app.config(['$httpProvider', "api", function ($httpProvider, api) {
     $httpProvider.defaults.headers.common.Authorization = 'Token token=' + api.key;
 
     $httpProvider.interceptors.push(['TokenService', function (TokenService) {
@@ -45,26 +45,14 @@ app.config(['$routeProvider', function ($routeProvider) {
 app.run(['$rootScope', '$location', 'Member', 'TokenService', 'MemberService', function ($rootScope, $location, Member, TokenService, MemberService) {
     $rootScope.$on('$routeChangeStart', function (event, next, current) {
         if (localStorage.getItem('token') != null) {
-            TokenService.setToken(localStorage.getItem('token'));
             Member.signedin({id: localStorage.getItem('id')}, function (m) {
-              MemberService.addMembers();
+              //console.log("toto");
             }, function (error) {
-                TokenService.setToken("");
                 localStorage.clear();
                 $location.path("/");
             });
         } else {
-            if (localStorage.getItem('token') == null) {
-                $location.path("/")
-            } else {
-                TokenService.setToken(localStorage.getItem('token'));
-                Member.signedin({id: localStorage.getItem('id')}, function (m) {
-                }, function (error) {
-                    TokenService.setToken("");
-                    localStorage.clear();
-                    $location.path("/");
-                });
-            }
+            $location.path("/");
         }
     });
 }]);
@@ -95,14 +83,16 @@ app.service('TokenService', [function () {
     this.token = "";
     this.setToken = function (t) {
         this.token = t;
+        localStorage.setItem("token", t);
     }
     this.getToken = function () {
-        return this.token;
+        return localStorage.getItem("token");
     }
 }]);
 
 app.service('MemberService', ['Member', function(Member){
     this.members = [];
+    this.members_by_ids = [];
 
     this.getMembers = function(){
       return this.members;
@@ -110,24 +100,20 @@ app.service('MemberService', ['Member', function(Member){
 
 
     this.findOne = function(id){
-      var members = Member.query(function(m){
-        //console.log(m);
-        m.forEach(function(element){
-          //console.log(element);
-          // console.log(element);
-          // console.log(id);
-        //  console.log("test2");
-          if(element._id == id){
-          //  console.log(element);
-            return element;
-          }
-        });
+      return this.members_by_ids[id] || undefined;
+    };
+
+
+    this.init = function(){
+      var self = this;
+      this.members = Member.query(function(members){
+        members.forEach(function(m){
+          self.members_by_ids[m._id] = m;
+        })
       });
     }
 
-    this.addMembers = function(){
-      this.members = Member.query(function(success){}, function(error){});
-    }
+    this.init();
 }]);
 
 
@@ -232,33 +218,11 @@ app.controller('channelsController', ['$scope', 'Channels', '$location', functio
     }
 }]);
 
-app.controller('postController', ['$scope', 'Post', '$location', 'MemberService', function ($scope, Post, $location, MemberService) {
-    var id = $location.url().split('/');
-    id = id[id.length - 1];
-    $scope.posts = Post.query({id: id},
-      function (success) {
-        success.forEach(function(e){
-          var newMember = "R";
-          var members = MemberService.getMembers();
-          // console.log(members);
-          var findMember = MemberService.findOne(e.member_id);
-          findMember.then(function(s){
-            console.log(s);
-            $scope.members.fullname = s.fullname;
-            $scope.members.email = s.email;
-          });
-          // newMember.fullname = MemberService.findOne(e.member_id).fullname;
-          // newMember.email = MemberService.findOne(e.member_id).email;
-        //  console.log(newMember);
-
-          //members.$promise.then(function(success){
-             //console.log(success);
-            // e.fullname = MemberService.findOne(e.member_id).fullname;
-            // e.email = MemberService.findOne(e.member_id).email;
-          //});
-          //console.log(e);
-        });
-    }, function (error) {
-        console.log(error);
-    });
+app.controller('postController', ['$scope', '$routeParams', 'Post', '$location', 'MemberService', function ($scope, $routeParams, Post, $location, MemberService) {
+    var id = $routeParams.id;
+    $scope.findMemberName = function(id){
+      var member = MemberService.findOne(id);
+      return member ? member.fullname : "inconnu";
+    }
+    $scope.posts = Post.query({id: id});
 }]);

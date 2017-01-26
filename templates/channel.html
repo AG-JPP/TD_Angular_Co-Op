@@ -2,8 +2,8 @@
   <h1></h1>
   <div>
     <ul class="collection with-header">
-      <li class="collection-header"ng-repeat="message in posts" ng-repeat="member in members">
-        <div>{{message.message}} <span class="secondary-content">Posted by {{member.fullname}}</span></div>
+      <li class="collection-header"ng-repeat="message in posts">
+        <div>{{message.message}} <span class="secondary-content">Posted by {{findMemberName(message.member_id)}}</span></div>
       </li>
     </ul>
   </div>
