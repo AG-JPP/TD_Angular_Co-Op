@@ -229,5 +229,9 @@ app.controller('postController', ['$scope', '$routeParams', 'Post', '$location',
     $scope.envoiePost = function() {
         $newPost = new Post({message : $scope.newMessage});
         $newPost.$save({id: id});
+        $scope.posts = Post.query({id: id});
+        $scope.newMessage = "";
+        var objDiv = document.getElementById("wrap");
+        objDiv.scrollTop = objDiv.scrollHeight;
     }
 }]);

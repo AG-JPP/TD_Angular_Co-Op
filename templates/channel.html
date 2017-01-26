@@ -1,6 +1,6 @@
 <div ng-controller="postController">
     <h1></h1>
-    <div>
+    <div class="row">
         <ul class="collection with-header">
             <li class="collection-header" ng-repeat="message in posts">
                 <div>{{message.message}} <span
@@ -8,7 +8,7 @@
             </li>
         </ul>
     </div>
-    <div style="position: absolute; bottom: 0; width:100%">
+    <div class="wrap" class="row" style=" width:100%; height: 20%">
         <textarea ng-model="newMessage" style="height: 8em" placeholder="entrez votre message ici"></textarea>
         <button class=" right btn waves-effect waves-light" ng-click="envoiePost()">Envoyer
             <i class="material-icons right">send</i>
