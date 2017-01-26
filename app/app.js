@@ -249,4 +249,9 @@ app.controller('postController', ['$scope', '$routeParams', 'Post', '$location',
         var objDiv = document.getElementById("wrap");
         objDiv.scrollTop = objDiv.scrollHeight;
     }
+
+    $scope.retour = function() {
+        $location.path("/channels");
+        $location.replace();
+    }
 }]);
