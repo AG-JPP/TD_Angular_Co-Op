@@ -63,14 +63,16 @@ app.factory('Member', ['$resource', 'api', function ($resource, api) {
         {
             update: {method: "PUT"},
             signin: {method: "POST", url: api.url + "/members/signin"},
-            signedin: {method: 'GET', url: api.url + '/members/:id/signedin'}
+            signedin: {method: 'GET', url: api.url + '/members/:id/signedin'},
+            logout : {method : "DELETE", url: api.url + "members/signout"}
         });
 }]);
 
 app.factory('Channels', ['$resource', 'api', function ($resource, api) {
     return $resource(api.url + "/channels/:id", {id: "@_id"},
         {
-            delete: {method: "DELETE", url: api.url + "/channels/:id"}
+            delete: {method: "DELETE", url: api.url + "/channels/:id"},
+            logout : {method : "DELETE", url: api.url + "/members/signout"}
         });
 }]);
 
@@ -216,6 +218,14 @@ app.controller('channelsController', ['$scope', 'Channels', '$location', functio
         $location.path("/channel/" + idChan);
         $location.replace();
     }
+
+    $scope.logout = function(){
+      Channels.logout(function(success){
+        $location.path("/");
+        $location.replace();
+      });
+    }
+
 }]);
 
 app.controller('postController', ['$scope', '$routeParams', 'Post', '$location', 'MemberService', function ($scope, $routeParams, Post, $location, MemberService) {
