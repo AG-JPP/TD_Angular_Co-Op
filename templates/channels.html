@@ -26,6 +26,16 @@
         </button>
       </form>
     </div>
-  <div class="collection" ng-repeat="channel in channels">
-      <a ng-click="findOne(channel._id)" class="collection-item"><span class="new badge" ng-click="findOne(channel._id)">Entrer dans le channel</span>{{channel.label}} - {{channel.topic}}</a>
-</div>
+
+      <ul class="collection" ng-repeat="channel in channels">
+        <li class="collection-item">
+          <div>{{channel.label}} - {{channel.topic}}
+          <a class="secondary-content">
+            <i ng-click="editChannel(channel._id)" class="material-icons">mode_edit
+            </i>
+            <i ng-click="findOne(channel._id)" class="material-icons">trending_flat
+            </i>
+          </a>
+        </div>
+      </li>
+      </ul>
