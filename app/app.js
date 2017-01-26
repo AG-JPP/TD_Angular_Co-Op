@@ -44,15 +44,16 @@ app.config(['$routeProvider', function ($routeProvider) {
 
 app.run(['$rootScope', '$location', 'Member', 'TokenService', 'MemberService', function ($rootScope, $location, Member, TokenService, MemberService) {
     $rootScope.$on('$routeChangeStart', function (event, next, current) {
-        if (localStorage.getItem('token') != null) {
-            Member.signedin({id: localStorage.getItem('id')}, function (m) {
-              //console.log("toto");
-            }, function (error) {
-                localStorage.clear();
+        if (next.templateUrl == "templates/channels.html" || next.templateUrl == "templates/channel.html") {
+            if (localStorage.getItem('token') != null) {
+                Member.signedin({id: localStorage.getItem('id')}, function (m) {
+                }, function (error) {
+                    localStorage.clear();
+                    $location.path("/");
+                });
+            } else {
                 $location.path("/");
-            });
-        } else {
-            $location.path("/");
+            }
         }
     });
 }]);
