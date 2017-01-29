@@ -80,7 +80,9 @@ app.factory('Channels', ['$resource', 'api', function ($resource, api) {
 
 app.factory('Post', ['$resource', 'api', function ($resource, api) {
     return $resource(api.url + "/channels/:id/posts", {id: "@_id"},
-        {})
+        {
+          delete: {method: "DELETE", url: api.url + "/posts/:id"}
+        });
 }]);
 
 app.service('TokenService', [function () {
@@ -254,5 +256,10 @@ app.controller('postController', ['$scope', '$routeParams', 'Post', '$location',
     $scope.retour = function() {
         $location.path("/channels");
         $location.replace();
+    }
+
+    $scope.deletePost = function(){
+      $Post.delte();
+      
     }
 }]);
