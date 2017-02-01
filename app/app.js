@@ -201,7 +201,7 @@ app.controller('registerController', ['$scope', 'Member', "$location" ,function 
 
 }]);
 
-app.controller('channelsController', ['$scope', 'Channels', '$location', function ($scope, Channels, $location) {
+app.controller('channelsController', ['$scope', 'Channels', '$location', '$route', function ($scope, Channels, $location, $route) {
 
   $scope.seeForm = false;
   $scope.seeTopic = true;
@@ -220,7 +220,7 @@ app.controller('channelsController', ['$scope', 'Channels', '$location', functio
             topic: $scope.channel.topic
         });
         $scope.newChannel.$save(function (success) {
-
+              $route.reload();
             },
             function (error) {
                 console.log(error);
@@ -260,6 +260,14 @@ app.controller('channelsController', ['$scope', 'Channels', '$location', functio
       );
     }
 
+    $scope.deleteChannel = function(id){
+      Channels.delete({id:id}, function(success){
+        $route.reload();
+        }, function(error){}
+      );
+
+    }
+
 }]);
 
 app.controller('postController', ['$scope', '$routeParams', 'Post', '$location', 'MemberService', function ($scope, $routeParams, Post, $location, MemberService) {
@@ -285,7 +293,7 @@ app.controller('postController', ['$scope', '$routeParams', 'Post', '$location',
     }
 
     $scope.deletePost = function(){
-      $Post.delte();
+      $Post.delete();
 
     }
 }]);

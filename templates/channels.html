@@ -31,6 +31,8 @@
         <li class="collection-item">
           <div ng-show = "seeTopic">{{channel.label}} - {{channel.topic}}
           <a class="secondary-content">
+            <i ng-click="deleteChannel(channel._id)" class="material-icons">trending_down
+            </i>
             <i ng-click="showForm()" class="material-icons">mode_edit
             </i>
             <i ng-click="findOne(channel._id)" class="material-icons">trending_flat
