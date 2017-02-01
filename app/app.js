@@ -81,7 +81,7 @@ app.factory('Channels', ['$resource', 'api', function ($resource, api) {
 app.factory('Post', ['$resource', 'api', function ($resource, api) {
     return $resource(api.url + "/channels/:id/posts", {id: "@_id"},
         {
-          delete: {method: "DELETE", url: api.url + "/posts/:id"}
+          delete: {method: "DELETE", url: api.url + "/posts/:idPost"}
         });
 }]);
 
@@ -270,7 +270,7 @@ app.controller('channelsController', ['$scope', 'Channels', '$location', '$route
 
 }]);
 
-app.controller('postController', ['$scope', '$routeParams', 'Post', '$location', 'MemberService', function ($scope, $routeParams, Post, $location, MemberService) {
+app.controller('postController', ['$scope', '$routeParams', 'Post', '$location', 'MemberService', '$route', function ($scope, $routeParams, Post, $location, MemberService, $route) {
     var id = $routeParams.id;
     $scope.findMemberName = function(id){
       var member = MemberService.findOne(id);
@@ -285,6 +285,7 @@ app.controller('postController', ['$scope', '$routeParams', 'Post', '$location',
         $scope.newMessage = "";
         var objDiv = document.getElementById("wrap");
         objDiv.scrollTop = objDiv.scrollHeight;
+        $route.reload();
     }
 
     $scope.retour = function() {
@@ -292,8 +293,10 @@ app.controller('postController', ['$scope', '$routeParams', 'Post', '$location',
         $location.replace();
     }
 
-    $scope.deletePost = function(){
-      $Post.delete();
+    $scope.deletePost = function(id){
+      // Post.delete({idPost:id}, function(success){
+      //   $route.reload();
+      // });
 
     }
 }]);

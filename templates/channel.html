@@ -9,8 +9,13 @@
             <li class="collection-header" ng-repeat="message in posts">
                 <div>{{message.message}} <span
                         class="secondary-content">Posted by {{findMemberName(message.member_id)}}</span></div>
+                        <a class="secondary-content">
+                          <i ng-click="deletePost(message._id)" class="material-icons">trending_down
+                          </i>
+                        </a>
             </li>
         </ul>
+
     </div>
     <div class="wrap" class="row" style=" width:100%; height: 20%">
         <textarea ng-model="newMessage" style="height: 8em" placeholder="entrez votre message ici"></textarea>
