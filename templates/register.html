@@ -1,6 +1,13 @@
   <div ng-controller = "registerController">
     <h1>Register</h1>
+    <button ng-click="retour()" class="btn waves-effect waves-light">
+        Retour
+        <i class="material-icons left">input</i>
+    </button>
       <div class="row">
+        <div class="card-panel teal lighten-2 white-text text-white" ng-show="registerSuccess">
+          You have been successfully registered
+        </div>
         <form class="col s12">
           <div class="input-field col s6">
             <label for="email">Email</label>

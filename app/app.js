@@ -177,8 +177,8 @@ app.controller("StartController", ["$scope", "$location", 'Member', 'TokenServic
 
 }]);
 
-app.controller('registerController', ['$scope', 'Member', function ($scope, Member) {
-
+app.controller('registerController', ['$scope', 'Member', "$location" ,function ($scope, Member, $location) {
+    $scope.registerSuccess = false;
     $scope.ajoutMembre = function () {
         $scope.newMember = new Member({
             fullname: $scope.member.fullname,
@@ -186,12 +186,17 @@ app.controller('registerController', ['$scope', 'Member', function ($scope, Memb
             password: $scope.member.pass,
         });
         $scope.newMember.$save(function (success) {
-                //console.log(success);
+                $scope.registerSuccess = true;
             },
             function (error) {
                 console.log(error);
             }
         );
+    }
+
+    $scope.retour = function() {
+        $location.path("/");
+        $location.replace();
     }
 
 }]);
@@ -260,6 +265,6 @@ app.controller('postController', ['$scope', '$routeParams', 'Post', '$location',
 
     $scope.deletePost = function(){
       $Post.delte();
-      
+
     }
 }]);
