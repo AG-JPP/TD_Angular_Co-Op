@@ -202,6 +202,10 @@ app.controller('registerController', ['$scope', 'Member', "$location" ,function 
 }]);
 
 app.controller('channelsController', ['$scope', 'Channels', '$location', function ($scope, Channels, $location) {
+
+  $scope.seeForm = false;
+  $scope.seeTopic = true;
+
     $scope.channels = Channels.query(
         function (success) {
 
@@ -235,8 +239,25 @@ app.controller('channelsController', ['$scope', 'Channels', '$location', functio
       });
     }
 
+    $scope.showForm = function(){
+      $scope.seeTopic = false;
+      $scope.seeForm = true;
+    }
+
     $scope.editChannel = function(id){
-      console.log(id);
+      console.log("test");
+      $scope.chan = new Channels({
+        label : $scope.editChannel.label,
+        topic : $scope.editChannel.topic
+      }),
+      $scope.chan.update({id: id}, function(success){
+          console.log(chan);
+          $scope.seeForm = false;
+          $scope.seeTopic = true;
+        },function(error){
+          console.log("error");
+        }
+      );
     }
 
 }]);

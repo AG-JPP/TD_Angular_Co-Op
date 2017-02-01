@@ -29,13 +29,22 @@
 
       <ul class="collection" ng-repeat="channel in channels">
         <li class="collection-item">
-          <div>{{channel.label}} - {{channel.topic}}
+          <div ng-show = "seeTopic">{{channel.label}} - {{channel.topic}}
           <a class="secondary-content">
-            <i ng-click="editChannel(channel._id)" class="material-icons">mode_edit
+            <i ng-click="showForm()" class="material-icons">mode_edit
             </i>
             <i ng-click="findOne(channel._id)" class="material-icons">trending_flat
             </i>
           </a>
         </div>
+        <div ng-show="seeForm">
+          <form class="left">
+              <input class="validate" type="text" ng-model="editChannel.label" placeholder="Label" />
+              <input class="validate" type="text" ng-model="editChannel.topic" placeholder="Topic"  />
+              <button class="btn waves-effect waves-light" type="submit" nb-click="editChannel(channel._id)">Valider
+                <i class="material-icons right">send</i>
+              </button>
+          </form>
+        </div>
       </li>
-      </ul>
+    </ul>
