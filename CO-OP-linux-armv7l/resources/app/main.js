@@ -17,9 +17,6 @@ function createWindow () {
     slashes: true
   }))
 
-  // Ouvrir DevTools.
-  win.webContents.openDevTools()
-
   // Émis lorsque la fenêtre est fermée.
   win.on('closed', () => {
     // Déréférencer l'objet fenêtre, habituellement vous stocker des fenêtres

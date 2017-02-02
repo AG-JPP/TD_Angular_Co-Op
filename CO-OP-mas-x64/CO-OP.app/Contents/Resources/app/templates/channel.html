@@ -10,6 +10,8 @@
                 <div>{{message.message}}
                   <span class="secondary-content">Posted by {{findMemberName(message.member_id)}}</span>
                         <a class="secondary-content">
+                            <i ng-click="updatePost(message._id)" class="material-icons">mode_edit
+                            </i>
                           <i ng-click="deletePost(message._id)" class="material-icons">delete
                           </i>
                         </a>
