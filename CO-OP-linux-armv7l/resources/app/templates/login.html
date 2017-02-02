@@ -1,0 +1,23 @@
+<div ng-controller="StartController">
+  <h1>Login</h1>
+  <div class="row">
+    <form class="col s12">
+      <div class="input-field col s6">
+        <label for="email">Email</label>
+          <input id="email" class="validate" type="text" ng-model="member.email"/>
+        </div>
+        <div class="input-field col s6">
+          <label for="password">Mot de passe</label>
+          <input id="password" class="validate" type="password" ng-model="member.pass"/>
+        </div>
+      </div>
+      <div class="row">
+          <button class="btn waves-effect waves-light" type="submit" ng-click="loginMembre()">Connexion
+            <i class="material-icons right">send</i>
+          </button>
+    </form>
+  <button class="btn waves-effect waves-light" ng-click="redirectRegister()">Register
+    <i class="material-icons right">assignment_ind</i>
+  </button>
+</div>
+</div>

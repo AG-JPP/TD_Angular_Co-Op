@@ -1,0 +1,79 @@
+<div ng-controller="mainController">
+
+
+<div class="row">
+  <br/>
+  <button ng-click="logout()" class="right btn waves-effect waves-light">Deconnexion
+    <i class="material-icons right">input</i>
+  </button>
+</div>
+
+<div class="card blue">
+  <div class="card-tabs">
+    <ul class="tabs tabs-fixed-width tabs-transparent">
+      <li class="tab" href="listChannels" ng-click="showChannelList()">Channels</li>
+      <li class="tab" href="listMembres" ng-click="showMemberList()">Membres</li>
+    </ul>
+  </div>
+  <div class="card-content grey lighten-4">
+    <div ng-show="mode_chan" id="listChannels">
+      <h1 class="center">Liste des channels</h1>
+          <div class="row">
+            <form class="col s12">
+              <div class="input-field col s6">
+                <label for="label">Label</label>
+                <input class="validate" id="label" type="text" ng-model="channel.label"/>
+              </div>
+              <div class="input-field col s6">
+                <label for="topic">Topic</label>
+                <input class="validate" id="topic" type="text" ng-model="channel.topic"/>
+              </div>
+            </div>
+            <div class="row">
+              <button class="btn waves-effect waves-light" type="submit" ng-click="createChannel()">Valider
+                <i class="material-icons right">send</i>
+              </button>
+            </form>
+          </div>
+
+            <ul class="collection" ng-repeat="channel in channels">
+              <li class="collection-item">
+                <div class="desc">{{channel.label}} - {{channel.topic}}
+                <a class="secondary-content">
+                  <i ng-click="deleteChannel(channel._id)" class="material-icons">delete
+                  </i>
+                  <i ng-click="showForm()" class="material-icons">mode_edit
+                  </i>
+                  <i ng-click="findOne(channel._id)" class="material-icons">trending_flat
+                  </i>
+                </a>
+              </div>
+              <!-- <div class="formul">
+                <form class="left">
+                    <input class="validate" type="text" ng-model="editChannel.label" placeholder="Label" />
+                    <input class="validate" type="text" ng-model="editChannel.topic" placeholder="Topic"  />
+                    <button class="btn waves-effect waves-light" type="submit" nb-click="editChannel(channel._id)">Valider
+                      <i class="material-icons right">send</i>
+                    </button>
+                </form>
+              </div> -->
+            </li>
+          </ul>
+        </div>
+    <div ng-show="mode_membres" id="listMembres">
+      <h1 class="center">Liste des membres</h1>
+      <div class="row">
+        <ul class="collection" ng-repeat="membre in members">
+          <li class="collection-item">
+            <div>
+                {{membre.fullname}}<br/>{{membre.email}}
+                <a class="secondary-content">
+                  <i ng-click="deleteMember(membre._id)" class="material-icons">delete</i>
+                </a>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
