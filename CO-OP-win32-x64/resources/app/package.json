@@ -1,0 +1,10 @@
+{
+  "name"    : "CO-OP",
+  "version" : "1.4.15",
+  "description" : "application angular js",
+  "main"    : "main.js",
+  "scripts" : {
+    "test" : "electron ."
+  },
+  "author" : "Giovannelli Alexis - Pereira Alexandre"
+}
