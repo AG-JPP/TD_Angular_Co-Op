@@ -67,6 +67,9 @@
           <li class="collection-item">
             <div>
                 {{membre.fullname}}<br/>{{membre.email}}
+                <a class="secondary-content">
+                  <i ng-click="deleteMember(membre._id)" class="material-icons">delete</i>
+                </a>
             </div>
           </li>
         </ul>

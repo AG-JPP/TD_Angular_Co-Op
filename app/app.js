@@ -65,7 +65,8 @@ app.factory('Member', ['$resource', 'api', function ($resource, api) {
             update: {method: "PUT"},
             signin: {method: "POST", url: api.url + "/members/signin"},
             signedin: {method: 'GET', url: api.url + '/members/:id/signedin'},
-            logout : {method : "DELETE", url: api.url + "members/signout"}
+            logout : {method : "DELETE", url: api.url + "members/signout"},
+            delete : {method : "DELETE", url: api.url + "/members/:id"}
         });
 }]);
 
@@ -125,33 +126,10 @@ app.service('MemberService', ['Member', function(Member){
 
 app.controller("StartController", ["$scope", "$location", 'Member', 'TokenService', "MemberService", function ($scope, $location, Member, TokenService, MemberService) {
 
-    $scope.members = Member.query(function (m) {
-            //console.log(m);
-        },
-        function (error) {
-            console.log(error);
-        }
-    );
-
     $scope.redirectRegister = function () {
         $location.path('/register');
         $location.replace();
     }
-
-    // $scope.ajoutMembre = function(){
-    //   $scope.newMember = new Member({
-    //       fullname: $scope.member.fullname,
-    //       email:  $scope.member.email,
-    //       password: $scope.member.pass,
-    //   });
-    //   $scope.newMember.$save(function(success){
-    //     console.log(success);
-    //    },
-    //      function(error){
-    //      console.log(error);
-    //    }
-    //   );
-    // }
 
     $scope.loginMembre = function () {
         $scope.member = Member.signin({
@@ -160,12 +138,9 @@ app.controller("StartController", ["$scope", "$location", 'Member', 'TokenServic
             },
             function (m) {
                 $scope.member = m;
-                //console.log($scope.member);
                 TokenService.setToken($scope.member.token);
                 localStorage.setItem("token", TokenService.getToken());
                 localStorage.setItem("id", $scope.member._id);
-                $scope.member = Member.query(function (member) {
-                });
                 $location.path('/channels');
                 $location.replace();
             },
@@ -251,7 +226,7 @@ app.controller('mainController', ['$scope', 'Channels', 'Member', '$location', '
             function (error) {
                 console.log(error);
             });
-    };
+    }
 
     $scope.findOne = function (idChan) {
         $location.path("/channel/" + idChan);
@@ -295,7 +270,14 @@ app.controller('mainController', ['$scope', 'Channels', 'Member', '$location', '
         $route.reload();
         }, function(error){}
       );
+    }
 
+    $scope.deleteMember = function(id){
+      Member.delete({id:id}, function(success){
+        $route.reload();
+      },function(error){
+
+      });
     }
 
 }]);
