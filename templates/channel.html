@@ -5,14 +5,16 @@
         <i class="material-icons left">input</i>
     </button>
     <div class="row">
-        <ul class="collection with-header">
-            <li class="collection-header" ng-repeat="message in posts">
-                <div>{{message.message}} <span
-                        class="secondary-content">Posted by {{findMemberName(message.member_id)}}</span></div>
+        <ul class="collection">
+            <li class="collection-item" ng-repeat="message in posts">
+                <div>{{message.message}}
+                  <span class="secondary-content">Posted by {{findMemberName(message.member_id)}}</span>
                         <a class="secondary-content">
                           <i ng-click="deletePost(message._id)" class="material-icons">delete
                           </i>
                         </a>
+                </div>
+
             </li>
         </ul>
 
