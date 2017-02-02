@@ -33,7 +33,7 @@ app.config(['$routeProvider', function ($routeProvider) {
 
     $routeProvider.when('/channels', {
         templateUrl: 'templates/channels.html',
-        controller: 'channelsController'
+        controller: 'mainController'
     });
 
     $routeProvider.when('/register', {
@@ -201,10 +201,12 @@ app.controller('registerController', ['$scope', 'Member', "$location" ,function 
 
 }]);
 
-app.controller('channelsController', ['$scope', 'Channels', '$location', '$route', function ($scope, Channels, $location, $route) {
+app.controller('mainController', ['$scope', 'Channels', 'Member', '$location', '$route', function ($scope, Channels, Member, $location, $route) {
 
   $scope.seeForm = false;
   $scope.seeTopic = true;
+  $scope.mode_chan = true;
+  $scope.mode_membres = false;
 
     $scope.channels = Channels.query(
         function (success) {
@@ -213,6 +215,25 @@ app.controller('channelsController', ['$scope', 'Channels', '$location', '$route
         function (error) {
             console.log(error);
         });
+
+        $scope.members = Member.query(
+          function(success){
+
+          },
+          function(error){
+
+          }
+        );
+
+        $scope.showTabContent = function(){
+          if($scope.mode_chan == false && $scope.mode_membres == true){
+            $scope.mode_membres = false;
+            $scope.mode_chan = true;
+          }else if($scope.mode_chan == true && $scope.mode_membres == false){
+            $scope.mode_chan = false;
+            $scope.mode_membres = true;
+          }
+        }
 
     $scope.createChannel = function () {
         $scope.newChannel = new Channels({
@@ -246,6 +267,10 @@ app.controller('channelsController', ['$scope', 'Channels', '$location', '$route
 
     $scope.editChannel = function(id){
       console.log("test");
+      var form = ""
+
+
+
       $scope.chan = new Channels({
         label : $scope.editChannel.label,
         topic : $scope.editChannel.topic
