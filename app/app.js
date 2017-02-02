@@ -82,7 +82,8 @@ app.factory('Channels', ['$resource', 'api', function ($resource, api) {
 app.factory('Post', ['$resource', 'api', function ($resource, api) {
     return $resource(api.url + "/channels/:id/posts", {id: "@_id"},
         {
-            delete: {method: "DELETE", url: api.url + "/channels/:id/posts/:idPost"}
+            delete: {method: "DELETE", url: api.url + "/channels/:id/posts/:idPost"},
+            update: {method: "PUT", url: api.url + "/channels/:id/posts/:idPost"}
         });
 }]);
 
@@ -1264,6 +1265,7 @@ app.controller('mainController', ['$scope', 'Channels', 'Member', '$location', '
 
 app.controller('postController', ['$scope', '$routeParams', 'Post', '$location', 'MemberService', '$route', 'Channels', function ($scope, $routeParams, Post, $location, MemberService, $route, Channels) {
     var id = $routeParams.id;
+    var edit_mode = false;
     $scope.findMemberName = function (id) {
         var member = MemberService.findOne(id);
         return member ? member.fullname : "inconnu";
@@ -1272,13 +1274,20 @@ app.controller('postController', ['$scope', '$routeParams', 'Post', '$location',
     $scope.posts = Post.query({id: id});
 
     $scope.envoiePost = function () {
-        $newPost = new Post({message: $scope.newMessage});
-        $newPost.$save({id: id});
-        $scope.posts = Post.query({id: id});
-        $scope.newMessage = "";
-        var objDiv = document.getElementById("wrap");
-        objDiv.scrollTop = objDiv.scrollHeight;
-        $route.reload();
+        if (!edit_mode) {
+            $newPost = new Post({message: $scope.newMessage});
+            $newPost.$save({id: id});
+            $scope.posts = Post.query({id: id});
+            $scope.newMessage = "";
+            var objDiv = document.getElementById("wrap");
+            objDiv.scrollTop = objDiv.scrollHeight;
+            $route.reload();
+        }
+        else if (edit_mode) {
+            edit_mode = false;
+            Post.update({id: $scope.updateMessage.channel_id, idPost: $scope.updateMessage._id}, {message: $scope.newMessage})
+            $route.reload();
+        }
     };
 
     $scope.retour = function () {
@@ -1291,5 +1300,11 @@ app.controller('postController', ['$scope', '$routeParams', 'Post', '$location',
         Post.delete({id: idChan, idPost: id}, function (success) {
             $route.reload();
         });
+    }
+
+    $scope.updatePost = function (id) {
+        edit_mode = true;
+        $scope.updateMessage = {_id: this.message._id, channel_id:this.message.channel_id, member_id: this.message.member_id, message: this.message.message};
+        $scope.newMessage = this.message.message;
     }
 }]);
