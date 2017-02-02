@@ -1,18 +1,18 @@
 <div ng-controller="mainController">
 
 
-<div>
+<div class="row">
   <br/>
   <button ng-click="logout()" class="right btn waves-effect waves-light">Deconnexion
     <i class="material-icons right">input</i>
   </button>
 </div>
 
-<div class="card">
+<div class="card blue">
   <div class="card-tabs">
-    <ul class="tabs tabs-fixed-width">
-      <li class="tab" href="listChannels" ng-click="showTabContent()">Channels</li>
-      <li class="tab" href="listMembres" ng-click="showTabContent()">Membres</li>
+    <ul class="tabs tabs-fixed-width tabs-transparent">
+      <li class="tab" href="listChannels" ng-click="showChannelList()">Channels</li>
+      <li class="tab" href="listMembres" ng-click="showMemberList()">Membres</li>
     </ul>
   </div>
   <div class="card-content grey lighten-4">

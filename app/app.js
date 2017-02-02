@@ -225,15 +225,20 @@ app.controller('mainController', ['$scope', 'Channels', 'Member', '$location', '
           }
         );
 
-        $scope.showTabContent = function(){
+        $scope.showChannelList = function(){
           if($scope.mode_chan == false && $scope.mode_membres == true){
             $scope.mode_membres = false;
             $scope.mode_chan = true;
-          }else if($scope.mode_chan == true && $scope.mode_membres == false){
+          }
+        };
+
+        $scope.showMemberList = function(){
+          if($scope.mode_chan == true && $scope.mode_membres == false){
             $scope.mode_chan = false;
             $scope.mode_membres = true;
           }
         }
+
 
     $scope.createChannel = function () {
         $scope.newChannel = new Channels({
